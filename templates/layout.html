@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <title>StockMarket</title>
+</head>
+<body>
+    <section>
+        <h1>Login</h1>
+        <form id="login_content" action="/login" method="post" >
+            <label for="username">Usuario:</label>
+            <input type="text" name="username" id="username" placeholder="Usuario" width="50px">
+            <label for="pwd">Senha:</label>
+            <input type="password" name="pwd" id="pwd" placeholder="Senha">
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+    
+</body>
+</html>
