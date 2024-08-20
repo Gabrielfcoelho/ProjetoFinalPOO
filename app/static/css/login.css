@@ -1,5 +1,12 @@
+
 body {
     background-color: rgb(4, 74, 144);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    color: whitesmoke;
+    text-align: center;
 }
 
 section {
@@ -11,7 +18,19 @@ section {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.366);
 }
 
+h1 {
+    text-align: center;
+}
+
 #login_content {
     display: flex;
     flex-direction: column;
+    margin: auto;
+    width: 200px;
+}
+
+footer {
+    color: whitesmoke;
+    text-align: center;
+    font-style: italic;
 }
