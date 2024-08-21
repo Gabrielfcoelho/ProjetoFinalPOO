@@ -15,4 +15,4 @@ def login():
         return render_template('login.html')
     username = request.form.get('username')
     password = request.form.get('pwd')
-    return render_template('layout.html', username=username, password=password)
+    return render_template('login.html', username=username, password=password)
