@@ -3,6 +3,7 @@ from functools import wraps
 from flask import redirect, render_template, session
 
 
+# Função para renderizar mensagens de erro
 def apology(message, code=400):
     """Render message as an apology to user."""
 
@@ -28,6 +29,7 @@ def apology(message, code=400):
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
+# Decorador para enviar usuário para o login caso não esteja logado
 def login_required(f):
     """
     Decorate routes to require login.

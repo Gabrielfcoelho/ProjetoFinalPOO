@@ -8,33 +8,8 @@
 </head>
 
 <body>
-    <header>
-        <nav>
-            <h1>Stock Market</h1>
-        </nav>
-    </header>
-    <section>
-        <h1>Login</h1>
-        <form id="login_content" action="/login" method="post" >
-            <div>
-                <label for="username">Usuario:</label>
-                <input type="text" name="username" id="username" placeholder="Usuario" width="50px">
-            </div>
-            <div>
-                <label for="pwd">Senha:</label>
-                <input type="password" name="pwd" id="pwd" placeholder="Senha">
-            </div>
-            <div>
-                <input type="submit" value="Submit">
-            </div>
-        </form>
-    </section>
-    <footer>
-        <p>&copy;StockMarket</p>
-        {% if username and password %}
-        <p>{{username}},{{password}}</p>
-        {% endif %}
-    </footer>
-    
+    {% block main %}
+    {% endblock %}
 </body>
+
 </html>
