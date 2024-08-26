@@ -1,3 +1,6 @@
+nav {
+    color: whitesmoke;
+}
 
 body {
     background-color: rgb(4, 74, 144);
@@ -22,7 +25,7 @@ h1 {
     text-align: center;
 }
 
-#login_content {
+#section_content {
     display: flex;
     flex-direction: column;
     margin: auto;

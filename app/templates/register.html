@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block main %}        
+    <nav>
+        <h1>Stock Market</h1>
+    </nav>
+    </header>
+    <section>
+    <h1>Cadastro</h1>
+    <form id="section_content" action="/register" method="post" >
+        <div>
+            <label for="username">Usuario:</label>
+            <input type="text" name="username" id="username" placeholder="Usuario" width="50px" required>
+        </div>
+        <div>
+            <label for="pwd">Senha:</label>
+            <input type="password" name="pwd" id="pwd" placeholder="Senha" required>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    </section>
+    <footer>
+    <p>&copy;StockMarket</p>
+    </footer>
+{% endblock %}
