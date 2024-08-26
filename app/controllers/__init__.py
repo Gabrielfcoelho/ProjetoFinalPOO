@@ -1,11 +1,13 @@
-from flask import Blueprint, render_template, request
-from .dataRecord import DataRecord
 import sqlite3
+
+from flask import Blueprint, redirect, render_template, request
+
+from ..helpers.helpers import apology, login_required
 from ..models.user import User
-from ..helpers.helpers import login_required, apology
+
+# from .dataRecord import DataRecord
 
 bp = Blueprint('main',__name__)
-
 
 con = sqlite3.connect('app/controllers/db/site.db')
 cur = con.cursor()
@@ -16,10 +18,10 @@ def adapter_user(user):
 sqlite3.register_adapter(User, adapter_user)
 
 def new_user(username, password):
-        data = User(username, password)
-        cur.executemany("INSERT INTO users VALUES(?)", data)
-        con.commit()
-        return
+    data = User(username, password)
+    cur.executemany("INSERT INTO users VALUES(?)", data)
+    con.commit()
+    return
 
 @bp.route("/")
 @login_required
@@ -40,7 +42,11 @@ def register():
         return render_template('register.html')
     username = request.form.get('username')
     password = request.form.get('pwd')
-    new_user(username, password)
-    return 200
+    # Cria um novo usuário com os dados
+    user = User(username, password)
+
+    # Registra o usuário no banco de dados com a própria classe
+    user.register()
+    return redirect('/login')
 
     

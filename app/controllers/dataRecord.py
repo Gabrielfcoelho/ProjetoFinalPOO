@@ -1,5 +1,7 @@
 # import sqlite3
+
 # from ..models.user import User
+
 
 # class DataRecord():
 
@@ -15,7 +17,7 @@
         
 #     def new_user(self, username, password):
 #         self.data = User(username, password)
-#         self.cur.executemany("INSERT INTO users VALUES(?)", ( self.data.username, self.data.password))
+#         self.cur.executemany("INSERT INTO users VALUES(?, ?)", (self.data.username, self.data.password))
 #         self.con.commit()
 #         return
     
