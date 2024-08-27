@@ -1,18 +1,21 @@
 import sqlite3
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, redirect, render_template, request, session
 
-from .dataRecord import DataRecord
+from flask_session import Session
+
 from ..helpers.helpers import apology, login_required
 from ..models.user import User
+from .dataRecord import DataRecord
 
 #instanciando blueprint
-bp = Blueprint('main',__name__)
+bp = Blueprint('main', __name__)
+
 
 @bp.route("/")
 @login_required
 def index():
-    return render_template('layout.html')
+    return render_template('index.html')
 
 @bp.route('/login', methods=["POST", "GET"])
 def login():
@@ -20,7 +23,16 @@ def login():
         return render_template('login.html')
     username = request.form.get('username')
     password = request.form.get('pwd')
-    return render_template('login.html', username=username, password=password)
+
+    db = DataRecord()
+    user = db.get_user(username, password)
+    if user is None:
+        return apology('Usuário não encontrado')
+    
+    print(user)
+    session['user_id'] = user[0] 
+
+    return redirect('/')
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -37,4 +49,8 @@ def register():
     db.new_user(user)
     return redirect('/login')
 
-    
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
