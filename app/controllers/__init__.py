@@ -4,7 +4,7 @@ from flask import Blueprint, redirect, render_template, request, session
 
 from flask_session import Session
 
-from ..helpers.helpers import apology, login_required
+from ..helpers.helpers import apology, get_stock, login_required
 from ..models.user import User
 from .dataRecord import DataRecord
 
@@ -12,9 +12,15 @@ from .dataRecord import DataRecord
 bp = Blueprint('main', __name__)
 
 
-@bp.route("/")
+@bp.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    if request.method == 'POST':
+        q = request.form.get('symbol')
+
+        stock = get_stock(q)
+        return render_template('index.html', stock=stock)
+    
     return render_template('index.html')
 
 @bp.route('/login', methods=["POST", "GET"])
