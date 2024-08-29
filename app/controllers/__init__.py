@@ -23,6 +23,21 @@ def index():
     
     return render_template('index.html')
 
+
+@bp.route('/buy', methods=['POST', 'GET'])
+@login_required
+def buy():
+    if request.method == 'GET':
+        return render_template('quote.html')
+    
+    q = request.form.get('symbol')
+    stock = get_stock(q)
+    if stock is None:
+        return apology('Ação não encontrada', 404)
+    
+    return render_template('quote.html', stock=stock)
+
+
 @bp.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'GET':
