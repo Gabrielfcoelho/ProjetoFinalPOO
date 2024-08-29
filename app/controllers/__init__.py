@@ -7,6 +7,7 @@ from flask_session import Session
 from ..helpers.helpers import apology, get_stock, login_required
 from ..models.user import User
 from .dataRecord import DataRecord
+from .application import Application
 
 #instanciando blueprint
 bp = Blueprint('main', __name__)
@@ -45,9 +46,9 @@ def login():
     username = request.form.get('username')
     password = request.form.get('pwd')
 
-    db = DataRecord()
-    user = db.get_user(username, password)
-    if user is None:
+    app = Application()
+    user = app.db.get_user(username, password)
+    if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
     print(user)
@@ -59,15 +60,10 @@ def login():
 def register():
     if request.method == 'GET':
         return render_template('register.html')
-    #conectando com banco de dados
-    db = DataRecord()
-    #coletando dados
+    app = Application()
     username = request.form.get('username')
     password = request.form.get('pwd')
-    #instanciando objeto User
-    user = User(username, password)
-    #adicionando user ao banco de dados
-    db.new_user(user)
+    app.register_user(username, password)
     return redirect('/login')
 
 
