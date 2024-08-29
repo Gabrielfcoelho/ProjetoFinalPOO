@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Stock Market</h1>
+    <p>Bem vindo a sua carteira!</p>
+    <section id="section_content">
+        <form action="/wallet" method="post">
+            <label for="stock">Ativo:</label>
+            <input type="text" name="stock" id="stock" placeholder="Ativo">
+            <label for="qtd">Quantidade:</label>
+            <input type="number" name="qtd" id="qtd">
+            <label for="price">Preço:</label>
+            <input type="text" name="price" id="price">
+            <input type="submit" value="enviar">
+        </form>
+    </section>
+{% endblock %}

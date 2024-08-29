@@ -1,5 +1,6 @@
 from .dataRecord import DataRecord
 from ..models.user import User
+from flask_session import Session
 
 class Application():
 
