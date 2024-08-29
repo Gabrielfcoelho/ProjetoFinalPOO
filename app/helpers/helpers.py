@@ -1,5 +1,7 @@
+import datetime
 from functools import wraps
 
+import requests
 from flask import redirect, render_template, session
 
 
@@ -44,3 +46,19 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def get_stock(symbol):
+    # Função para pegar informações de uma ação
+    symbol = symbol.upper()
+    url = f"http://brapi.dev/api/quote/{symbol}?token=tVvVt6GbrSWFeB5Sg34bd7"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        quote = response.json()
+        price = round(float(quote["results"][-1]["regularMarketPrice"]), 2)
+        return {"symbol": symbol, "price": price}
+    except requests.RequestException:
+        return None
