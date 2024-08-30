@@ -7,6 +7,7 @@ from flask_session import Session
 from ..helpers.helpers import apology, get_stock, login_required
 from ..models.user import User
 from ..models.stock import Stock
+from ..models.wallet import Wallet
 from .dataRecord import DataRecord
 from .application import Application
 
@@ -68,19 +69,33 @@ def register():
     return redirect('/login')
 
 @bp.route("/wallet", methods=['GET', 'POST'])
+@login_required
 def wallet():
     if request.method == 'GET':
         return render_template('wallet.html')
+    
     app = Application()
+    wallet = Wallet()
+    
     stockName = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
     price = float(request.form.get('price'))
+
     stock = Stock(stockName, price, qtd)
-    #inserindo carteira no banco de dados
-    app.db.update_wallet(stock)
+
+    #inserindo ações na carteira
+    wallet.buy_stock(stock)
     #testando carteira
-    print(app.db.show_wallet())
+    print(wallet.stock_list)
+    #inserindo mais ações
+    price += 10
+    stock = Stock(stockName, price, qtd)
+    wallet.buy_stock(stock)
+    #testando carteira
+    print(wallet.stock_list)
+
     return redirect('/')
+
 
 @bp.route('/logout')
 def logout():
