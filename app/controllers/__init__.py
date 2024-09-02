@@ -14,33 +14,6 @@ from .application import Application
 #instanciando blueprint
 bp = Blueprint('main', __name__)
 
-
-@bp.route("/", methods=["GET", "POST"])
-@login_required
-def index():
-    if request.method == 'POST':
-        q = request.form.get('symbol')
-
-        stock = get_stock(q)
-        return render_template('index.html', stock=stock)
-    
-    return render_template('index.html')
-
-
-@bp.route('/buy', methods=['POST', 'GET'])
-@login_required
-def buy():
-    if request.method == 'GET':
-        return render_template('quote.html')
-    
-    q = request.form.get('symbol')
-    stock = get_stock(q)
-    if stock is None:
-        return apology('Ação não encontrada', 404)
-    
-    return render_template('quote.html', stock=stock)
-
-
 @bp.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'GET':
@@ -68,20 +41,48 @@ def register():
     app.register_user(username, password)
     return redirect('/login')
 
-@bp.route("/wallet", methods=['GET', 'POST'])
+@bp.route("/", methods=["GET", "POST"])
+@login_required
+def index():
+    if request.method == 'POST':
+        q = request.form.get('symbol')
+
+        stock = get_stock(q)
+        return render_template('index.html', stock=stock)
+    
+    return render_template('index.html')
+
+
+@bp.route('/buy', methods=['POST', 'GET'])
+@login_required
+def buy():
+    if request.method == 'GET':
+        return render_template('quote.html')
+    
+    q = request.form.get('symbol')
+    stock = get_stock(q)
+    if stock is None:
+        return apology('Ação não encontrada', 404)
+    
+    return render_template('quote.html', stock=stock)
+
+@bp.route("/buy", methods=['GET', 'POST'])
 @login_required
 def wallet():
     if request.method == 'GET':
-        return render_template('wallet.html')
+        return render_template('buy.html')
     
     app = Application()
     wallet = Wallet()
     
-    stockName = request.form.get('stock')
+    symbol = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
     price = float(request.form.get('price'))
 
-    stock = Stock(stockName, price, qtd)
+    if get_stock(symbol) is None:
+        return apology('Ação não encontrada', 404)
+
+    stock = Stock(symbol, price, qtd)
 
     #inserindo ações na carteira
     wallet.buy_stock(stock)
@@ -89,7 +90,7 @@ def wallet():
     print(wallet.stock_list)
     #inserindo mais ações
     price += 10
-    stock = Stock(stockName, price, qtd)
+    stock = Stock(symbol, price, qtd)
     wallet.buy_stock(stock)
     #testando carteira
     print(wallet.stock_list)

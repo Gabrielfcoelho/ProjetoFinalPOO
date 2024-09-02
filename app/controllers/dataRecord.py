@@ -14,25 +14,26 @@ class DataRecord():
     def db_connect(self):
         if self.cur.execute("SELECT name from sqlite_master WHERE name='users'").fetchone() is None:
             self.cur.execute('''CREATE TABLE users (
+                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                              username TEXT UNIQUE NOT NULL,
                              password TEXT NOT NULL
                              )
                              ''')
-        # if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
-        #     self.cur.execute('''CREATE TABLE wallet (
-        #                      user_id INTEGER,
-        #                      stock TEXT NOT NULL,
-        #                      qtd INTEGER NOT NULL,
-        #                      avg_price REAL NOT NULL,
-        #                      avg_cost REAL NOT NULL,
-        #                      FOREIGN KEY (user_id) REFERENCES users(id)
-        #                      )
-        #                      ''')
+        if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
+            self.cur.execute('''CREATE TABLE wallet (
+                             user_id INTEGER,
+                             stock TEXT NOT NULL,
+                             qtd INTEGER NOT NULL,
+                             avg_price REAL NOT NULL,
+                             avg_cost REAL NOT NULL,
+                             FOREIGN KEY (user_id) REFERENCES users(id)
+                             )
+                             ''')
         return
         
     def new_user(self, user):
         self.user = user
-        self.cur.executemany("INSERT INTO users VALUES(?, ?)", self.user.db_format())
+        self.cur.executemany("INSERT INTO users(username, password) VALUES(?, ?)", self.user.db_format())
         self.con.commit()
         return
 

@@ -1,6 +1,6 @@
 class Stock():
-    def __init__(self, name, price, qtd) -> None:
-        self.name = name
+    def __init__(self, symbol, price, qtd) -> None:
+        self.name = symbol
         self.price = price
         self.qtd = qtd
         self.cost = self.price * self.qtd
