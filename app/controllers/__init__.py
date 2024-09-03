@@ -25,9 +25,7 @@ def admin_register():
     username = request.form.get('username')
     password = request.form.get('pwd')
     admin = 1
-    new_user = app.register_user(username, password, admin)
-    if not new_user:
-        return apology('Usuário já utilizado')
+    app.register_user(username, password, admin)
     return redirect('/admin/login')
 
 @bp.route('/admin/login', methods=["POST", "GET"])

@@ -19,6 +19,7 @@ class DataRecord():
                              id INTEGER PRIMARY KEY AUTOINCREMENT,
                              username TEXT UNIQUE NOT NULL,
                              password TEXT NOT NULL
+                             admin INTEGER DEFAULT 0
                              )
                              ''')
         if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
@@ -41,7 +42,10 @@ class DataRecord():
 
     def new_admin(self, user):
         self.user = user
-        print("É admin? ", self.user)
+        if self.get_user(self.user.username, self.user.password) is not None:
+            self.cur.execute("UPDATE users SET admin=1 WHERE username=? AND password=?", (self.user.username, self.user.password))
+            self.con.commit()
+            return
         self.cur.executemany("INSERT INTO users(username, password, admin) VALUES(?, ?, ?)", self.user.db_format())
         self.con.commit()
         return
