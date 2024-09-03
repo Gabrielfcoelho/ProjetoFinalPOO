@@ -6,20 +6,36 @@
     </nav>
     </header>
     <section>
-    <h1>Cadastro</h1>
-    <form id="section_content" action="/register" method="post" >
-        <div>
-            <label for="username">Usuario:</label>
-            <input type="text" name="username" id="username" placeholder="Usuario" width="50px" required>
-        </div>
-        <div>
-            <label for="pwd">Senha:</label>
-            <input type="password" name="pwd" id="pwd" placeholder="Senha" required>
-        </div>
-        <div>
-            <input type="submit" value="Submit">
-        </div>
-    </form>
+        <h1>Cadastro</h1>
+        {% if adm %}
+            <form id="section_content" action="/admin/register" method="post" >
+                <div>
+                    <label for="username">Usuario:</label>
+                    <input type="text" name="username" id="username" placeholder="Usuario" width="50px" required>
+                </div>
+                <div>
+                    <label for="pwd">Senha:</label>
+                    <input type="password" name="pwd" id="pwd" placeholder="Senha" required>
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        {% else %}
+            <form id="section_content" action="/register" method="post" >
+                <div>
+                    <label for="username">Usuario:</label>
+                    <input type="text" name="username" id="username" placeholder="Usuario" width="50px" required>
+                </div>
+                <div>
+                    <label for="pwd">Senha:</label>
+                    <input type="password" name="pwd" id="pwd" placeholder="Senha" required>
+                </div>
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        {% endif%}
     </section>
     <footer>
     <p>&copy;StockMarket</p>
