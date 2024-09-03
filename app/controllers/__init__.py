@@ -4,7 +4,8 @@ from flask import Blueprint, redirect, render_template, request, session
 
 from flask_session import Session
 
-from ..helpers.helpers import apology, get_stock, login_required
+from ..helpers.helpers import (admin_required, apology, get_stock,
+                               login_required)
 from ..models.stock import Stock
 from ..models.user import User
 from ..models.wallet import Wallet
@@ -27,7 +28,7 @@ def admin_register():
     new_user = app.register_user(username, password, admin)
     if not new_user:
         return apology('Usuário já utilizado')
-    return redirect('/login')
+    return redirect('/admin/login')
 
 @bp.route('/admin/login', methods=["POST", "GET"])
 def admin_login():
@@ -42,7 +43,16 @@ def admin_login():
 
     print(user)
     session['user_id'] = user[0] 
-    return redirect()
+    session['admin'] = user[3]
+
+    return redirect('/admin')
+
+
+@bp.route('/admin', methods=["GET", "POST"])
+@admin_required
+def admin_index():
+    return render_template("index.html")
+
 
 
 @bp.route('/login', methods=["POST", "GET"])
