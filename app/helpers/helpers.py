@@ -47,6 +47,22 @@ def login_required(f):
 
     return decorated_function
 
+# Decorador para enviar erro ao usuário caso não seja admin
+def admin_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("admin") is None:
+            return apology("Usuário não tem permissão para acessar esta rota")
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 
 def get_stock(symbol):
     # Função para pegar informações de uma ação

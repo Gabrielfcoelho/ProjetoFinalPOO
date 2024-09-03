@@ -1,5 +1,6 @@
 import sqlite3
 from uuid import uuid4
+
 from ..models.user import User
 from ..models.wallet import Wallet
 from ..models.stock import Stock
@@ -32,12 +33,19 @@ class DataRecord():
                              ''')
         return
         
-    def new_user(self, user):
+    def new_client(self, user):
         self.user = user
         self.cur.executemany("INSERT INTO users(username, password) VALUES(?, ?)", self.user.db_format())
         self.con.commit()
         return
 
+    def new_admin(self, user):
+        self.user = user
+        print("É admin? ", self.user)
+        self.cur.executemany("INSERT INTO users(username, password, admin) VALUES(?, ?, ?)", self.user.db_format())
+        self.con.commit()
+        return
+    
     def get_user(self, username, password):
         self.username = username
         self.password = password

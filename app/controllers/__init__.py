@@ -4,15 +4,56 @@ from flask import Blueprint, redirect, render_template, request, session
 
 from flask_session import Session
 
-from ..helpers.helpers import apology, get_stock, login_required
-from ..models.user import User
+from ..helpers.helpers import (admin_required, apology, get_stock,
+                               login_required)
 from ..models.stock import Stock
+from ..models.user import User
 from ..models.wallet import Wallet
-from .dataRecord import DataRecord
 from .application import Application
+from .dataRecord import DataRecord
 
 #instanciando blueprint
 bp = Blueprint('main', __name__)
+
+
+@bp.route('/admin/register', methods=["POST", "GET"])
+def admin_register():
+    if request.method == 'GET':
+        adm = True
+        return render_template('register.html', adm=adm)
+    app = Application()
+    username = request.form.get('username')
+    password = request.form.get('pwd')
+    admin = 1
+    new_user = app.register_user(username, password, admin)
+    if not new_user:
+        return apology('Usuário já utilizado')
+    return redirect('/admin/login')
+
+@bp.route('/admin/login', methods=["POST", "GET"])
+def admin_login():
+    if request.method == 'GET':
+        adm = True
+        return render_template('login.html', adm=adm)
+
+    app = Application()
+    username = request.form.get('username')
+    password = request.form.get('pwd')
+    user = app.db.get_user(username, password)
+
+    print(user)
+    session['user_id'] = user[0] 
+    session['admin'] = user[3]
+
+    return redirect('/admin')
+
+
+@bp.route('/admin', methods=["GET", "POST"])
+@admin_required
+def admin_index():
+    return render_template("index.html")
+
+
 
 @bp.route('/login', methods=["POST", "GET"])
 def login():
@@ -26,8 +67,8 @@ def login():
     if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
-    print(user)
     session['user_id'] = user[0] 
+    session['admin'] = user[3]
 
     return redirect('/')
 
