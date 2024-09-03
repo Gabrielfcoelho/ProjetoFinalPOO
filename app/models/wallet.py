@@ -2,11 +2,11 @@ class Wallet():
     def __init__(self) -> None:
         self.stock_list = {}
 
-    def buy_stock(self, stock01, stock02):
-        if stock01.symbol == stock02.symbol:
-            self.stock_list[stock01.symbol] = stock01 + stock02
+    def buy_stock(self, dbStock, newStock):
+        if dbStock.symbol == newStock.symbol:
+            self.stock_list[dbStock.symbol] = dbStock + newStock
+        return
 
-    def sell_stock(self, stock):
-        if stock.symbol not in self.stock_list.keys():
-            return
-        self.stock_list[stock.symbol] -= stock
+    def sell_stock(self, dbStock, sellStock):
+        self.stock_list[dbStock.symbol] = dbStock - sellStock
+        return

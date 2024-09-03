@@ -22,3 +22,10 @@ class Stock():
             new_price = (self.cost + stock.cost) / new_qtd
             return Stock(self.symbol, new_qtd, new_price)
         return ValueError("Objeto invalido!")
+    
+    def __sub__(self, stock):
+        if self.symbol == stock.symbol:
+            new_qtd = self.qtd - stock.qtd
+            new_price = (self.cost - stock.cost) / new_qtd
+            return Stock(self.symbol, new_qtd, new_price)
+        return ValueError("Objeto invalido!")
