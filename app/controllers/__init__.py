@@ -53,27 +53,13 @@ def index():
     return render_template('index.html')
 
 
-@bp.route('/buy', methods=['POST', 'GET'])
-@login_required
-def buy():
-    if request.method == 'GET':
-        return render_template('quote.html')
-    
-    q = request.form.get('symbol')
-    stock = get_stock(q)
-    if stock is None:
-        return apology('Ação não encontrada', 404)
-    
-    return render_template('quote.html', stock=stock)
-
 @bp.route("/buy", methods=['GET', 'POST'])
 @login_required
-def wallet():
+def buy():
     if request.method == 'GET':
         return render_template('buy.html')
     
     app = Application()
-    wallet = Wallet()
     
     symbol = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
@@ -81,19 +67,8 @@ def wallet():
 
     if get_stock(symbol) is None:
         return apology('Ação não encontrada', 404)
-
-    stock = Stock(symbol, price, qtd)
-
-    #inserindo ações na carteira
-    wallet.buy_stock(stock)
-    #testando carteira
-    print(wallet.stock_list)
-    #inserindo mais ações
-    price += 10
-    stock = Stock(symbol, price, qtd)
-    wallet.buy_stock(stock)
-    #testando carteira
-    print(wallet.stock_list)
+    
+    app.buy_stock(symbol,qtd , price, session["user_id"])
 
     return redirect('/')
 

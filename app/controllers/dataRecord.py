@@ -2,6 +2,7 @@ import sqlite3
 from uuid import uuid4
 from ..models.user import User
 from ..models.wallet import Wallet
+from ..models.stock import Stock
 
 
 class DataRecord():
@@ -42,25 +43,23 @@ class DataRecord():
         self.password = password
         return self.cur.execute("SELECT * FROM users WHERE username=? AND password=?", (self.username, self.password)).fetchone()
     
-    # #testanto update da carteira
-    # def update_wallet(self, stock):
-    #     self.stock = stock
-    #     self.wallet = Wallet()
-    #     self.wallet.add_stock(stock)
-    #     self.cur.executemany("INSERT INTO wallet VALUES(?, ?, ?, ?, ?)", 
-    #                          [
-    #                              (
-    #                                 self.stock.name,
-    #                                 self.wallet.stock_list[stock.name]['qtd'], 
-    #                                 self.wallet.stock_list[stock.name]['avg_price'], 
-    #                                 self.wallet.stock_list[stock.name]['avg_cost']
-    #                                 )
-    #                             ]
-    #                          )
-    #     self.con.commit()
-    #     return
-    
-    # #testando carteira
-    # def show_wallet(self):
-    #     return self.cur.execute("SELECT * FROM wallet WHERE stock='BBAS3F'").fetchall()
-    
+    # atualizar carteira
+    def update_wallet(self, newStock, user_id):
+        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (newStock.symbol, user_id)).fetchone() is not None:
+            # instancia wallet
+            wallet = Wallet()
+            # recupera dados do banco
+            name, qtd, price = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (newStock.symbol, user_id)).fetchone()
+            # cria objeto stock com os dados recuperados
+            oldStock = Stock(name, qtd, price)
+            # soma os dados do novo stock com os armazenados no banco
+            wallet.buy_stock(oldStock, newStock)
+            # atualiza o banco de dados
+            self.cur.execute("UPDATE wallet SET qtd = ?, avg_price = ?, avg_cost = ? WHERE stock = ? AND user_id = ?", (wallet.stock_list[newStock.symbol].qtd,wallet.stock_list[newStock.symbol].price,wallet.stock_list[newStock.symbol].cost, newStock.symbol, user_id))
+            self.con.commit()
+            return
+        # adiciona uma nova stock no banco de dados
+        self.cur. execute("INSERT INTO wallet Values(?, ?, ?, ?, ?)", (user_id, newStock.symbol, newStock.qtd, newStock.price, newStock.cost))
+        self.con.commit()
+        return
+        

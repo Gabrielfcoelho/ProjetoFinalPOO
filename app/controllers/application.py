@@ -1,6 +1,8 @@
 from .dataRecord import DataRecord
 from ..models.user import User
 from flask_session import Session
+from ..models.wallet import Wallet
+from ..models.stock import Stock
 
 class Application():
 
@@ -21,3 +23,8 @@ class Application():
             self.db.new_user(self.user)
             return True
         return False
+
+    def buy_stock(self, symbol, qtd, price, id):
+        newStock = Stock(symbol, qtd, price)
+        self.db.update_wallet( newStock, id)
+        return
