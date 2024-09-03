@@ -51,8 +51,8 @@ class DataRecord():
         self.password = password
         return self.cur.execute("SELECT * FROM users WHERE username=? AND password=?", (self.username, self.password)).fetchone()
     
-    # atualizar carteira
-    def update_wallet(self, newStock, user_id):
+    # adiciona stock para a carteira
+    def add_wallet(self, newStock, user_id):
         if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (newStock.symbol, user_id)).fetchone() is not None:
             # instancia wallet
             wallet = Wallet()
@@ -70,4 +70,18 @@ class DataRecord():
         self.cur. execute("INSERT INTO wallet Values(?, ?, ?, ?, ?)", (user_id, newStock.symbol, newStock.qtd, newStock.price, newStock.cost))
         self.con.commit()
         return
-        
+    
+    # remove stocks para a carteira
+    def rm_wallet(self, sellStock, user_id):
+        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone() is not None:
+            print("1")
+            wallet = Wallet()
+            dbSymbol, dbQtd, dbPrice = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone()
+            if sellStock.qtd < dbQtd:
+                print("2")
+                dbStock = Stock(dbSymbol, dbQtd, dbPrice)
+                wallet.sell_stock(dbStock, sellStock)
+                print(wallet.stock_list[dbSymbol])
+            elif sellStock.qtd == dbQtd:
+                self.cur.execute()
+        print("3")

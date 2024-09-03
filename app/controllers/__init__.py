@@ -1,16 +1,11 @@
-import sqlite3
-
 from flask import Blueprint, redirect, render_template, request, session
 
 from flask_session import Session
 
-from ..helpers.helpers import (admin_required, apology, get_stock,
-                               login_required)
-from ..models.stock import Stock
-from ..models.user import User
-from ..models.wallet import Wallet
+from ..helpers.helpers import (admin_required, apology, get_stock, login_required)
+
 from .application import Application
-from .dataRecord import DataRecord
+
 
 #instanciando blueprint
 bp = Blueprint('main', __name__)
@@ -29,6 +24,7 @@ def admin_register():
     if not new_user:
         return apology('Usuário já utilizado')
     return redirect('/admin/login')
+
 
 @bp.route('/admin/login', methods=["POST", "GET"])
 def admin_login():
@@ -54,7 +50,6 @@ def admin_index():
     return render_template("index.html")
 
 
-
 @bp.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'GET':
@@ -72,6 +67,7 @@ def login():
 
     return redirect('/')
 
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -81,6 +77,7 @@ def register():
     password = request.form.get('pwd')
     app.register_user(username, password)
     return redirect('/login')
+
 
 @bp.route("/", methods=["GET", "POST"])
 @login_required
@@ -93,7 +90,7 @@ def index():
     
     return render_template('index.html')
 
-
+# comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])
 @login_required
 def buy():
@@ -109,9 +106,26 @@ def buy():
     if get_stock(symbol) is None:
         return apology('Ação não encontrada', 404)
     
-    app.buy_stock(symbol,qtd , price, session["user_id"])
+    app.buy_stock(symbol, qtd, price, session["user_id"])
 
     return redirect('/')
+
+# vender stocks
+@bp.route("/sell", methods= ["GET", "POST"])
+@login_required
+def sell():
+    if request.method == "GET":
+        return render_template("sell.html")
+    
+    app = Application()
+
+    symbol = request.form.get('stock')
+    qtd = float(request.form.get('qtd'))
+    price = float(request.form.get('price'))
+
+    app.sell_stock(symbol, qtd, price, session["user_id"])
+
+    return redirect("/")
 
 
 @bp.route('/logout')

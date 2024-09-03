@@ -36,5 +36,10 @@ class Application():
 
     def buy_stock(self, symbol, qtd, price, id):
         newStock = Stock(symbol, qtd, price)
-        self.db.update_wallet( newStock, id)
+        self.db.add_wallet( newStock, id)
         return
+    
+
+    def sell_stock(self, symbol, qtd, price, id):
+        sellStock = Stock(symbol, qtd, price)
+        self.db.rm_wallet(sellStock, id)
