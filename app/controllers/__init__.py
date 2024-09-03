@@ -57,9 +57,9 @@ def login():
     if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
-    print(user)
     session['user_id'] = user[0] 
     session['admin'] = user[3]
+
     return redirect('/')
 
 @bp.route('/register', methods=['GET', 'POST'])
