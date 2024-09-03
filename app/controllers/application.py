@@ -1,9 +1,9 @@
 from flask_session import Session
-from ..models.wallet import Wallet
-from ..models.stock import Stock
 
 from ..models.adm import Adm
+from ..models.stock import Stock
 from ..models.user import User
+from ..models.wallet import Wallet
 from .dataRecord import DataRecord
 
 
@@ -26,7 +26,7 @@ class Application():
         else:
             self.user = User(username, password)
         
-        if self.authenticate_user(username, password) is False:
+        if self.authenticate_user(username, password) is False or admin == 1:
             if isinstance(self.user, Adm):
                 self.db.new_admin(self.user)
             else:

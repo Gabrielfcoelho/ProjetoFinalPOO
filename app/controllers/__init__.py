@@ -20,9 +20,7 @@ def admin_register():
     username = request.form.get('username')
     password = request.form.get('pwd')
     admin = 1
-    new_user = app.register_user(username, password, admin)
-    if not new_user:
-        return apology('Usuário já utilizado')
+    app.register_user(username, password, admin)
     return redirect('/admin/login')
 
 
@@ -63,7 +61,7 @@ def login():
         return apology('Usuário não encontrado')
     
     session['user_id'] = user[0] 
-    session['admin'] = user[3]
+    # session['admin'] = user[3]
 
     return redirect('/')
 
@@ -82,13 +80,12 @@ def register():
 @bp.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    if request.method == 'POST':
-        q = request.form.get('symbol')
+    app = Application()
 
-        stock = get_stock(q)
-        return render_template('index.html', stock=stock)
+    wallet = app.db.get_wallet(session['user_id'])
+    print(wallet)
     
-    return render_template('index.html')
+    return render_template('index.html', wallet=wallet)
 
 # comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])
@@ -132,3 +129,11 @@ def sell():
 def logout():
     session.clear()
     return redirect('/login')
+
+
+@bp.route('/user/<int:id>')
+def user(id):
+    app = Application()
+    user = app.db.get_user_by_id(session['user_id'])
+    print(user)
+    return render_template('profile.html', user=user)

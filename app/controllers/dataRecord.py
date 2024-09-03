@@ -1,9 +1,9 @@
 import sqlite3
 from uuid import uuid4
 
+from ..models.stock import Stock
 from ..models.user import User
 from ..models.wallet import Wallet
-from ..models.stock import Stock
 
 
 class DataRecord():
@@ -19,6 +19,7 @@ class DataRecord():
                              id INTEGER PRIMARY KEY AUTOINCREMENT,
                              username TEXT UNIQUE NOT NULL,
                              password TEXT NOT NULL
+                             admin INTEGER DEFAULT 0
                              )
                              ''')
         if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
@@ -41,7 +42,10 @@ class DataRecord():
 
     def new_admin(self, user):
         self.user = user
-        print("É admin? ", self.user)
+        if self.get_user(self.user.username, self.user.password) is not None:
+            self.cur.execute("UPDATE users SET admin=1 WHERE username=? AND password=?", (self.user.username, self.user.password))
+            self.con.commit()
+            return
         self.cur.executemany("INSERT INTO users(username, password, admin) VALUES(?, ?, ?)", self.user.db_format())
         self.con.commit()
         return
@@ -50,6 +54,10 @@ class DataRecord():
         self.username = username
         self.password = password
         return self.cur.execute("SELECT * FROM users WHERE username=? AND password=?", (self.username, self.password)).fetchone()
+    
+    def get_user_by_id(self, user_id):
+        self.user_id = user_id
+        return self.cur.execute("SELECT * FROM users WHERE id=?", (self.user_id,)).fetchone()
     
     # adiciona stock para a carteira
     def add_wallet(self, newStock, user_id):
@@ -85,3 +93,6 @@ class DataRecord():
             elif sellStock.qtd == dbQtd:
                 self.cur.execute()
         print("3")
+    
+    def get_wallet(self, user_id):
+        return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
