@@ -14,10 +14,15 @@ class DataRecord():
     def db_connect(self):
         if self.cur.execute("SELECT name from sqlite_master WHERE name='users'").fetchone() is None:
             self.cur.execute('''CREATE TABLE users (
+                             
                              username TEXT UNIQUE NOT NULL,
                              password TEXT NOT NULL
                              )
                              ''')
+        # else:
+        #     self.cur.execute('''ALTER TABLE users ADD column id INTEGER''')
+        #     # self.cur.execute('''ALTER TABLE )
+        #     self.con.commit()
         # if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
         #     self.cur.execute('''CREATE TABLE wallet (
         #                      user_id INTEGER,

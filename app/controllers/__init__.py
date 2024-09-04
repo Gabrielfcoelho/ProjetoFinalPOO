@@ -27,6 +27,10 @@ def index():
     return render_template('index.html')
 
 
+@bp.route("/profile", methods=["GET", "POST"])
+def profile():
+    return render_template("profile.html")
+
 @bp.route('/buy', methods=['POST', 'GET'])
 @login_required
 def buy():
