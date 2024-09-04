@@ -32,7 +32,7 @@ def admin_login():
     app = Application()
     username = request.form.get('username')
     password = request.form.get('pwd')
-    user = app.db.get_user(username, password)
+    user = app.get_user(username, password)
 
     print(user)
     session['user_id'] = user[0] 
@@ -55,7 +55,7 @@ def login():
     password = request.form.get('pwd')
 
     app = Application()
-    user = app.db.get_user(username, password)
+    user = app.get_user(username, password)
     if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
@@ -133,7 +133,7 @@ def logout():
 @bp.route('/user/<int:id>', methods=['GET', 'POST'])
 def user(id):
     app = Application()
-    user = app.db.get_user_by_id(id)
+    user = app.get_user_by_id(id)
     return render_template('profile.html', user=user)
 
 @bp.route('/user/<int:id>/edit', methods=['POST'])
@@ -143,5 +143,12 @@ def edit_user(id):
     password = request.form.get('pwd')
     role = request.form.get('role')
 
-    app.db.edit_user(id, username, role, password)
+    app.edit_user(id, username, role, password)
     return redirect('/user/{}'.format(id))
+
+@bp.route('/user/<int:id>/delete', methods=['POST'])
+def delete_user(id):
+    app = Application()
+    app.delete_user(id)
+    session.clear()
+    return redirect('/login')

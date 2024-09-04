@@ -64,8 +64,13 @@ class DataRecord():
         self.username = username
         self.password = password
         self.role = role
-        print(self.username, self.password, self.role, self.user_id)
         self.cur.execute("UPDATE users SET username=?, password=?, role=? WHERE id=?", (self.username, self.password, self.role, self.user_id))
+        self.con.commit()
+        return
+
+    def delete_user(self, user_id):
+        self.user_id = user_id
+        self.cur.execute("DELETE FROM users WHERE id=?", (self.user_id,))
         self.con.commit()
         return
 

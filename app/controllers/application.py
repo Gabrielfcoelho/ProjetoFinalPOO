@@ -33,6 +33,12 @@ class Application():
                 self.db.new_client(self.user)
             return True
         return False
+    
+    def get_user(self, username, password):
+        return self.db.get_user(username, password)
+    
+    def get_user_by_id(self, user_id):
+        return self.db.get_user_by_id(user_id)
 
     def buy_stock(self, symbol, qtd, price, id):
         newStock = Stock(symbol, qtd, price)
@@ -43,3 +49,14 @@ class Application():
     def sell_stock(self, symbol, qtd, price, id):
         sellStock = Stock(symbol, qtd, price)
         self.db.rm_wallet(sellStock, id)
+
+    def get_wallet(self, user_id):
+        return self.db.get_wallet(user_id)
+    
+    def edit_user(self, user_id, username, role, password):
+        self.db.edit_user(user_id, username, role, password)
+        return
+    
+    def delete_user(self, user_id):
+        self.db.delete_user(user_id)
+        return
