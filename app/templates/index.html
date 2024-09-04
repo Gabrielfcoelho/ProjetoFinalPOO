@@ -8,6 +8,28 @@
   <section>
     <p>Welcome to the home page!</p>
     <a href="/wallet">Carteira!</a>
+    {% if wallet %}
+      <table>
+        <thead>
+            <tr>
+                <th>Ação</th>
+                <th>Quantidade</th>
+                <th>Preço Médio</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for stock in wallet %}
+            <tr>
+                <td>{{ stock[1] }}</td>
+                <td>{{ stock[2] }}</td>
+                <td>{{ stock[3] }}</td>
+                <td>{{ stock[4] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
   </section>
 
 {% endblock %}

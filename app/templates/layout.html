@@ -13,7 +13,7 @@
         <ul>
             {% if session['user_id'] %}
                 <li><a href="/">Home</a></li>
-                <li><a href="/profile">Profile</a></li>
+                <li><a href="/user/{{ session['user_id'] }}">Profile</a></li>
                 <li><a href="/buy">Buy</a></li>
                 <li><a href="/sell">Sell</a></li>
                 <li><a href="/history">History</a></li>
