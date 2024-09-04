@@ -2,10 +2,9 @@ from flask import Blueprint, redirect, render_template, request, session
 
 from flask_session import Session
 
-from ..helpers.helpers import (admin_required, apology, get_stock, login_required)
-
+from ..helpers.helpers import (admin_required, apology, get_stock,
+                               login_required)
 from .application import Application
-
 
 #instanciando blueprint
 bp = Blueprint('main', __name__)
@@ -131,9 +130,18 @@ def logout():
     return redirect('/login')
 
 
-@bp.route('/user/<int:id>')
+@bp.route('/user/<int:id>', methods=['GET', 'POST'])
 def user(id):
     app = Application()
-    user = app.db.get_user_by_id(session['user_id'])
-    print(user)
+    user = app.db.get_user_by_id(id)
     return render_template('profile.html', user=user)
+
+@bp.route('/user/<int:id>/edit', methods=['POST'])
+def edit_user(id):
+    app = Application()
+    username = request.form.get('username')
+    password = request.form.get('pwd')
+    role = request.form.get('role')
+
+    app.db.edit_user(id, username, role, password)
+    return redirect('/user/{}'.format(id))

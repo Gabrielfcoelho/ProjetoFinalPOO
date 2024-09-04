@@ -59,6 +59,16 @@ class DataRecord():
         self.user_id = user_id
         return self.cur.execute("SELECT * FROM users WHERE id=?", (self.user_id,)).fetchone()
     
+    def edit_user(self, user_id, username, role, password):
+        self.user_id = user_id
+        self.username = username
+        self.password = password
+        self.role = role
+        print(self.username, self.password, self.role, self.user_id)
+        self.cur.execute("UPDATE users SET username=?, password=?, role=? WHERE id=?", (self.username, self.password, self.role, self.user_id))
+        self.con.commit()
+        return
+
     # adiciona stock para a carteira
     def add_wallet(self, newStock, user_id):
         if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (newStock.symbol, user_id)).fetchone() is not None:
