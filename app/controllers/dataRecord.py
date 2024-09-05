@@ -16,7 +16,6 @@ class DataRecord():
     def db_connect(self):
         if self.cur.execute("SELECT name from sqlite_master WHERE name='users'").fetchone() is None:
             self.cur.execute('''CREATE TABLE users (
-                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                              username TEXT UNIQUE NOT NULL,
                              password TEXT NOT NULL
                              admin INTEGER DEFAULT 0
@@ -32,6 +31,16 @@ class DataRecord():
                              FOREIGN KEY (user_id) REFERENCES users(id)
                              )
                              ''')
+        # if self.cur.execute("SELECT name from sqlite_master WHERE name='wallet'").fetchone() is None:
+        #     self.cur.execute('''CREATE TABLE wallet (
+        #                      user_id INTEGER,
+        #                      stock TEXT NOT NULL,
+        #                      qtd INTEGER NOT NULL,
+        #                      avg_price REAL NOT NULL,
+        #                      avg_cost REAL NOT NULL,
+        #                      FOREIGN KEY (user_id) REFERENCES users(id)
+        #                      )
+        #                      ''')
         return
         
     def new_client(self, user):
