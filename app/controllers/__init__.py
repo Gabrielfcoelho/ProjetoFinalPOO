@@ -117,9 +117,9 @@ def sell():
 
     symbol = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
-    price = float(request.form.get('price'))
 
-    app.sell_stock(symbol, qtd, price, session["user_id"])
+    if app.sell_stock(symbol, qtd, session["user_id"]) is not True:
+        return apology("Operação inválida! Não é possível vender mais ações do que você possui!")
 
     return redirect("/")
 

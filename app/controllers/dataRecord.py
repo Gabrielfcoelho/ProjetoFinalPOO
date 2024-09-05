@@ -95,19 +95,25 @@ class DataRecord():
         return
     
     # remove stocks para a carteira
-    def rm_wallet(self, sellStock, user_id):
-        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone() is not None:
-            print("1")
+    def rm_wallet(self, symbol, qtd, user_id):
+        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id)).fetchone() is not None:
             wallet = Wallet()
-            dbSymbol, dbQtd, dbPrice = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone()
-            if sellStock.qtd < dbQtd:
-                print("2")
+            dbSymbol, dbQtd, dbPrice = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id)).fetchone()
+            # Se a quantidade for menor que a do Banco, retira o número indicado de ações 
+            if qtd < dbQtd:
                 dbStock = Stock(dbSymbol, dbQtd, dbPrice)
+                sellStock = Stock(symbol, qtd, dbPrice)
                 wallet.sell_stock(dbStock, sellStock)
-                print(wallet.stock_list[dbSymbol])
-            elif sellStock.qtd == dbQtd:
-                self.cur.execute()
-        print("3")
+                self.cur.execute("UPDATE wallet SET qtd = ?, avg_cost =? WHERE stock = ? AND user_id = ?", (wallet.stock_list[dbSymbol].qtd, wallet.stock_list[dbSymbol].cost, dbSymbol, user_id))
+                self.con.commit()
+                return True
+            # Se a quantidade for a mesma do Banco, deleta completamente a ação
+            elif qtd == dbQtd:
+                self.cur.execute("DELETE FROM wallet WHERE stock = ? AND user_id = ?", (dbSymbol, user_id))
+                self.con.commit()
+                return True
+        else:
+            return False
     
     def get_wallet(self, user_id):
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
