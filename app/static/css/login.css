@@ -133,6 +133,7 @@ form input, form select, form button {
 }
 
 #form_submit {
+    margin-top: 15px;
     border: 0.5px solid #007BFF;
     cursor: pointer;
     transition: background-color 0.3s ease;
