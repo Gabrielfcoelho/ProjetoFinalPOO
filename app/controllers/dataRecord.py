@@ -111,3 +111,12 @@ class DataRecord():
     
     def get_wallet(self, user_id):
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
+
+    def get_all_users(self):
+        return self.cur.execute("SELECT * FROM users").fetchall()
+    
+    def get_all_wallet(self):
+        return self.cur.execute("SELECT * FROM wallet").fetchall()
+    
+    def get_all_history(self):
+        return self.cur.execute("SELECT * FROM history").fetchall()

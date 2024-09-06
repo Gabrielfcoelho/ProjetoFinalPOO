@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1>Admin Panel</h1>
+
+    <!-- Seção de Usuários -->
+    <section>
+        <h2>Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>{{ 'Admin' if user[3] == 1 else 'User' }}</td>
+                    <td>
+                        <a href="/edit_user/{{ user.id }}">Edit</a> |
+                        <a href="/delete_user/{{ user.id }}" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Seção de Carteiras (Wallet) -->
+    <section>
+        <h2>Wallets</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Stock</th>
+                    <th>Quantity</th>
+                    <th>Average Price</th>
+                    <th>Total Cost</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wallet in wallets %}
+                <tr>
+                    <td>{{ wallet[0] }}</td>
+                    <td>{{ wallet[1] }}</td>
+                    <td>{{ wallet[2] }}</td>
+                    <td>{{ wallet[3] }}</td>
+                    <td>{{ wallet[4] }}</td>
+                    <td>
+                        <a href="/edit_wallet/{{ wallet.user_id }}/{{ wallet.stock }}">Edit</a> |
+                        <a href="/delete_wallet/{{ wallet.user_id }}/{{ wallet.stock }}" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Seção de Histórico (History) -->
+    <section>
+        <h2>History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Stock</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in history %}
+                <tr>
+                    <td>{{ history.id }}</td>
+                    <td>{{ history.type }}</td>
+                    <td>{{ history.stock }}</td>
+                    <td>{{ history.qtd }}</td>
+                    <td>{{ history.price }}</td>
+                    <td>{{ history.total }}</td>
+                    <td>
+                        <a href="/edit_history/{{ history.id }}">Edit</a> |
+                        <a href="/delete_history/{{ history.id }}" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

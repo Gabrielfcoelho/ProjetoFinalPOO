@@ -53,22 +53,17 @@ header {
 section {
     background-color: whitesmoke;
     border-radius: 10px;
-    padding: 15px;
+    padding: 20px;
     width: fit-content;
-    margin: auto;
+    margin: 20px auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.366);
 }
 
-h1 {
+h1, h2 {
     text-align: center;
+    margin-top: 20px;
 }
 
-#section_content {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    width: 200px;
-}
 
 footer {
     color: whitesmoke;
@@ -101,3 +96,78 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #ddd;
 }
+
+td a {
+    text-decoration: none;
+    color: #007BFF;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+td a:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+section + section {
+    margin-top: 40px;
+}
+
+/* Botões de formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input, form select, form button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#form_submit {
+    border: 0.5px solid #007BFF;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form_submit:hover {
+    background-color: #007bff;
+}
+
+form button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+#edit-profile-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#edit-profile-btn:hover {
+    background-color: #0056b3;
+
+}
+

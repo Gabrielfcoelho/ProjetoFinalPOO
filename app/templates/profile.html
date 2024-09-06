@@ -24,11 +24,11 @@
                 <option value="0" {% if user[3] == 0 %}selected{% endif %}>User</option>
                 <option value="1" {% if user[3] == 1 %}selected{% endif %}>Admin</option>
 
-            <input type="submit" value="Update Profile">
+            <input id="form_submit" type="submit" value="Update Profile">
         </form>
 
         <form method="POST" action="/user/{{ user[0] }}/delete">
-            <input type="submit" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+            <input id="form_submit" type="submit" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
         </form>
     </section>
 

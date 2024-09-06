@@ -44,7 +44,13 @@ def admin_login():
 @bp.route('/admin', methods=["GET", "POST"])
 @admin_required
 def admin_index():
-    return render_template("index.html")
+    app = Application()
+    
+    users = app.db.get_all_users()
+    wallets = app.db.get_all_wallet()
+    # history = db.execute("SELECT * FROM history")
+
+    return render_template("admin.html", users=users, wallets=wallets)
 
 
 @bp.route('/login', methods=["POST", "GET"])
@@ -59,8 +65,10 @@ def login():
     if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
+    print(user)
+
     session['user_id'] = user[0] 
-    # session['admin'] = user[3]
+    session['admin'] = user[3]
 
     return redirect('/')
 
