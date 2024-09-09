@@ -61,3 +61,12 @@ class Application():
     def delete_user(self, user_id):
         self.db.delete_user(user_id)
         return
+
+    def get_users(self):
+        return self.db.get_all_users()
+
+    def get_wallets(self):
+        return self.db.get_all_wallets()
+
+    def get_records(self):
+        return self.db.get_all_records()

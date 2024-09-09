@@ -1,19 +1,18 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <h1>Admin Panel</h1>
+    <h1>Painel de Administração</h1>
 
-    <!-- Seção de Usuários -->
     <section>
-        <h2>Users</h2>
+        <h2>Usuários</h2>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th>Nome de usuário</th>
+                    <th>Senha</th>
+                    <th>Cargo</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,10 +21,10 @@
                     <td>{{ user[0] }}</td>
                     <td>{{ user[1] }}</td>
                     <td>{{ user[2] }}</td>
-                    <td>{{ 'Admin' if user[3] == 1 else 'User' }}</td>
+                    <td>{{ 'Administrador' if user[3] == 1 else 'Usuário' }}</td>
                     <td>
-                        <a href="/edit_user/{{ user.id }}">Edit</a> |
-                        <a href="/delete_user/{{ user.id }}" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/user/{{ user[0] }}">Edit</a> |
+                        <a href="/user/{{ user[0] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -33,13 +32,12 @@
         </table>
     </section>
 
-    <!-- Seção de Carteiras (Wallet) -->
     <section>
-        <h2>Wallets</h2>
+        <h2>Carteiras</h2>
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
+                    <th>ID do usuário</th>
                     <th>Stock</th>
                     <th>Quantity</th>
                     <th>Average Price</th>
@@ -56,8 +54,8 @@
                     <td>{{ wallet[3] }}</td>
                     <td>{{ wallet[4] }}</td>
                     <td>
-                        <a href="/edit_wallet/{{ wallet.user_id }}/{{ wallet.stock }}">Edit</a> |
-                        <a href="/delete_wallet/{{ wallet.user_id }}/{{ wallet.stock }}" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/edit_wallet/{{ wallet[0] }}/{{ wallet[1] }}">Edit</a> |
+                        <a href="/delete_wallet/{{ wallet[0] }}/{{ wallet[1] }}" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -65,33 +63,32 @@
         </table>
     </section>
 
-    <!-- Seção de Histórico (History) -->
     <section>
-        <h2>History</h2>
+        <h2>Histórico</h2>
         <table>
             <thead>
                 <tr>
+                    <th>ID do usuário</th>
                     <th>ID</th>
-                    <th>Type</th>
-                    <th>Stock</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Actions</th>
+                    <th>Tipo</th>
+                    <th>Ativo</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                {% for history in history %}
+                {% for record in records %}
                 <tr>
-                    <td>{{ history.id }}</td>
-                    <td>{{ history.type }}</td>
-                    <td>{{ history.stock }}</td>
-                    <td>{{ history.qtd }}</td>
-                    <td>{{ history.price }}</td>
-                    <td>{{ history.total }}</td>
+                    <td>{{ record[0] }}</td>
+                    <td>{{ record[1] }}</td>
+                    <td>{{ record[2] }}</td>
+                    <td>{{ record[3] }}</td>
+                    <td>{{ record[4] }}</td>
+                    <td>{{ record[5] }}</td>
                     <td>
-                        <a href="/edit_history/{{ history.id }}">Edit</a> |
-                        <a href="/delete_history/{{ history.id }}" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/edit_history/{{ record[0] }}">Edit</a> |
+                        <a href="/delete_history/{{ record[0] }}" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
