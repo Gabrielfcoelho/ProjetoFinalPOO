@@ -47,8 +47,7 @@ class Application():
     
 
     def sell_stock(self, symbol, qtd, price, id):
-        sellStock = Stock(symbol, qtd, price)
-        self.db.rm_wallet(sellStock, id)
+        return self.db.rm_wallet(symbol, qtd, price, id)
 
     def get_wallet(self, user_id):
         return self.db.get_wallet(user_id)

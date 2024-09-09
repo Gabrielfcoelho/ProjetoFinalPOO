@@ -1,29 +1,29 @@
 {% extends "layout.html" %}
 
-{% block title %}Stock Market{% endblock %}
-
 {% block main %}
-  <h1>Stock Market</h1>
+
+<h1>Stock Market</h1>
 
   <section>
-    <p>Welcome to the home page!</p>
-    {% if wallet %}
+    <p>Bem vindo ao histórico de ordens!</p>
+
+    {% if history %}
       <table>
         <thead>
             <tr>
+                <th>Tipo</th>
                 <th>Ação</th>
                 <th>Quantidade</th>
                 <th>Preço Médio</th>
-                <th>Custo Médio</th>
             </tr>
         </thead>
         <tbody>
-          {% for stock in wallet %}
+          {% for stock in history %}
             <tr>
-                <td>{{ stock[1] }}</td>
                 <td>{{ stock[2] }}</td>
                 <td>{{ stock[3] }}</td>
                 <td>{{ stock[4] }}</td>
+                <td>{{ stock[5] }}</td>
             </tr>
           {% endfor %}
         </tbody>

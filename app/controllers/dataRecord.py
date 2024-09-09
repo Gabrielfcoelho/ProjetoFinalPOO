@@ -32,6 +32,17 @@ class DataRecord():
                              FOREIGN KEY (user_id) REFERENCES users(id)
                              )
                              ''')
+        if self.cur.execute("SELECT name FROM sqlite_master WHERE name='records'").fetchone() is None:
+            self.cur.execute('''CREATE TABLE records(
+                             user_id INTEGER,
+                             order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                             order_type TEXT NOT NULL,
+                             stock TEXT NOT NULL,
+                             qtd INTEGER NOT NULL,
+                             avg_price REAL NOT NULL,
+                             FOREIGN KEY (user_id) REFERENCES users(id)
+                             )
+                            ''')
         return
         
     def new_client(self, user):
@@ -87,30 +98,43 @@ class DataRecord():
             wallet.buy_stock(oldStock, newStock)
             # atualiza o banco de dados
             self.cur.execute("UPDATE wallet SET qtd = ?, avg_price = ?, avg_cost = ? WHERE stock = ? AND user_id = ?", (wallet.stock_list[newStock.symbol].qtd,wallet.stock_list[newStock.symbol].price,wallet.stock_list[newStock.symbol].cost, newStock.symbol, user_id))
+            self.cur. execute("INSERT INTO records(user_id, order_type, stock, qtd, avg_price) Values(?, ?, ?, ?, ?)", (user_id, 'Compra', newStock.symbol, wallet.stock_list[newStock.symbol].qtd, wallet.stock_list[newStock.symbol].price))
             self.con.commit()
             return
         # adiciona uma nova stock no banco de dados
         self.cur. execute("INSERT INTO wallet Values(?, ?, ?, ?, ?)", (user_id, newStock.symbol, newStock.qtd, newStock.price, newStock.cost))
+        self.cur. execute("INSERT INTO records(user_id, order_type, stock, qtd, avg_price) Values(?, ?, ?, ?, ?)", (user_id, 'Compra', newStock.symbol, newStock.qtd, newStock.price))
         self.con.commit()
         return
     
     # remove stocks para a carteira
-    def rm_wallet(self, sellStock, user_id):
-        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone() is not None:
-            print("1")
+    def rm_wallet(self, symbol, qtd, price, user_id):
+        if self.cur.execute("SELECT * FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id)).fetchone() is not None:
             wallet = Wallet()
-            dbSymbol, dbQtd, dbPrice = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (sellStock.symbol, user_id)).fetchone()
-            if sellStock.qtd < dbQtd:
-                print("2")
+            dbSymbol, dbQtd, dbPrice = self.cur.execute("SELECT stock, qtd, avg_price FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id)).fetchone()
+            # Se a quantidade for menor que a do Banco, retira o número indicado de ações 
+            if qtd < dbQtd:
                 dbStock = Stock(dbSymbol, dbQtd, dbPrice)
+                sellStock = Stock(symbol, qtd, dbPrice)
                 wallet.sell_stock(dbStock, sellStock)
-                print(wallet.stock_list[dbSymbol])
-            elif sellStock.qtd == dbQtd:
-                self.cur.execute()
-        print("3")
+                self.cur.execute("UPDATE wallet SET qtd = ?, avg_cost =? WHERE stock = ? AND user_id = ?", (wallet.stock_list[dbSymbol].qtd, wallet.stock_list[dbSymbol].cost, dbSymbol, user_id))
+                self.cur. execute("INSERT INTO records(user_id, order_type, stock, qtd, avg_price) Values(?, ?, ?, ?, ?)", (user_id, 'Venda', symbol, qtd, price))
+                self.con.commit()
+                return True
+            # Se a quantidade for a mesma do Banco, deleta completamente a ação
+            elif qtd == dbQtd:
+                self.cur.execute("DELETE FROM wallet WHERE stock = ? AND user_id = ?", (dbSymbol, user_id))
+                self.cur. execute("INSERT INTO records(user_id, order_type, stock, qtd, avg_price) Values(?, ?, ?, ?, ?)", (user_id, 'Venda', symbol, qtd, price))
+                self.con.commit()
+                return True
+        else:
+            return False
     
     def get_wallet(self, user_id):
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
+    
+    def get_records(self, user_id):
+        return self.cur.execute("SELECT * FROM records WHERE user_id=?", (user_id,)).fetchall()
 
     def get_all_users(self):
         return self.cur.execute("SELECT * FROM users").fetchall()
@@ -118,5 +142,5 @@ class DataRecord():
     def get_all_wallet(self):
         return self.cur.execute("SELECT * FROM wallet").fetchall()
     
-    def get_all_history(self):
-        return self.cur.execute("SELECT * FROM history").fetchall()
+    def get_all_records(self):
+        return self.cur.execute("SELECT * FROM records").fetchall()
