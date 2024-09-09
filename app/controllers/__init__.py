@@ -96,40 +96,42 @@ def index():
 
 # comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])
+@bp.route("/buy/<string:symbol>/<float:price>", methods=['GET', 'POST'])
 @login_required
-def buy():
+def buy(symbol=None, price=None):
     if request.method == 'GET':
         return render_template('buy.html')
-    
     app = Application()
-    
-    symbol = request.form.get('stock')
-    qtd = float(request.form.get('qtd'))
-    price = get_stock(symbol)['price']
-
-    if get_stock(symbol) is None:
+    if symbol is None:
+        symbol = request.form.get('stock')
+        price = get_stock(symbol)['price']
+        if get_stock(symbol) is not None:
+            return render_template('buy.html', symbol=symbol, price=price)
         return apology('Ação não encontrada', 404)
-    
+    qtd = float(request.form.get('qtd'))
     app.buy_stock(symbol, qtd, price, session["user_id"])
-
     return redirect('/')
+    
 
 # vender stocks
 @bp.route("/sell", methods= ["GET", "POST"])
+@bp.route("/sell/<string:symbol>/<float:price>", methods= ["GET", "POST"])
 @login_required
-def sell():
+def sell(symbol=None, price=None):
     if request.method == "GET":
         return render_template("sell.html")
     
     app = Application()
 
-    symbol = request.form.get('stock')
-    qtd = float(request.form.get('qtd'))
-    price = get_stock(symbol)['price']
-
-    if app.sell_stock(symbol, qtd, price, session["user_id"]) is not True:
+    if symbol is None:
+        symbol = request.form.get('stock')
+        price = get_stock(symbol)['price']
+        if app.search_stock(symbol, session['user_id']):
+            return render_template("sell.html", symbol=symbol, price=price)
         return apology("Operação inválida!")
-
+    qtd = float(request.form.get('qtd'))
+    if app.sell_stock(symbol, qtd, price, session["user_id"]) is False:
+        return apology("Operação inválida!")
     return redirect("/")
 
 # historico

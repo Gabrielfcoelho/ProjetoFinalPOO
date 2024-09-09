@@ -44,10 +44,12 @@ class Application():
         newStock = Stock(symbol, qtd, price)
         self.db.add_wallet( newStock, id)
         return
-    
 
     def sell_stock(self, symbol, qtd, price, id):
         return self.db.rm_wallet(symbol, qtd, price, id)
+    
+    def search_stock(self, symbol, user_id):
+        return self.db.get_stock(symbol, user_id)
 
     def get_wallet(self, user_id):
         return self.db.get_wallet(user_id)

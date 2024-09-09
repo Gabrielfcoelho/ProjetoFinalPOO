@@ -4,15 +4,19 @@
     <h1>Stock Market</h1>
     <h1>Bem vindo a area de vendas!</h1>
     <section id="section_content">
-        <form action="/sell" method="post">
-            <label for="stock">Ativo:</label>
-            <input type="text" name="stock" id="stock" placeholder="Ativo">
-            <label for="qtd">Quantidade:</label>
-            <input type="number" name="qtd" id="qtd">
-            {% if price %}
+        {% if not symbol %}
+            <form action="/sell" method="post">
+                <label for="stock">Ativo:</label>
+                <input type="text" name="stock" id="stock" placeholder="Ativo">
+                <input id="form_submit" type="submit" value="Confirmar">
+            </form>
+        {% else %}
+            <form action="/sell/{{ symbol }}/{{ price }}" method="post">
+                <label for="qtd">Quantidade:</label>
+                <input type="number" name="qtd" id="qtd">
                 <p>Preço atual: {{ price }} </p>
-            {% endif %}
-            <input id="form_submit" type="submit" value="Vender">
-        </form>
+                <input id="form_submit" type="submit" value="Vender">
+            </form>
+        {% endif %}
     </section>
 {% endblock %}
