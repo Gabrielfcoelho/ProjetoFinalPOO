@@ -1,35 +1,35 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <h1 class="body_txt">Profile</h1>
+    <h1 class="body_txt">Perfil</h1>
     <section>
-        <p>Welcome, <b>{{ user[1] }}!</b></p>
-        <p>Your password is: {{ user[2] }}</p>
+        <p>Bem-vindo, <b>{{ user[1] }}!</b></p>
+        <p>Sua senha atual é: {{ user[2] }}</p>
         {% if user[3] == 1 %}
-            <p>Your role is: Admin </p>
+            <p>Seu cargo atual é: Administrador </p>
         {% else %}
-            <p>Your role is: User </p>
+            <p>Seu cargo atual é: Usuário </p>
         {% endif %}
 
-        <button id="edit-profile-btn">Edit Profile</button>
+        <button id="edit-profile-btn">Editar Perfil</button>
         <form id="edit-profile-form" style="display:none;" method="POST" action="/user/{{ user[0] }}/edit">
-            <label for="username">Username:</label>
+            <label for="username">Nome de usuário:</label>
             <input type="text" id="username" name="username" value="{{ user[1] }}"><br>
 
-            <label for="pwd">Password:</label>
+            <label for="pwd">Senha:</label>
             <input type="password" id="pwd" name="pwd" value="{{ user[2] }}"><br>
 
-            <label for="role">Role:</label>
+            <label for="role">Cargo:</label>
             <select id="role" name="role">
-                <option value="0" {% if user[3] == 0 %}selected{% endif %}>User</option>
-                <option value="1" {% if user[3] == 1 %}selected{% endif %}>Admin</option>
+                <option value="0" {% if user[3] == 0 %}selected{% endif %}>Usuário</option>
+                <option value="1" {% if user[3] == 1 %}selected{% endif %}>Administrador</option>
             </select><br>
 
-            <input id="form_submit" type="submit" value="Update Profile">
+            <input id="form_submit" type="submit" value="Atualizar perfil">
         </form>
 
         <form method="POST" action="/user/{{ user[0] }}/delete">
-            <input id="form_submit" type="submit" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+            <input id="form_submit" type="submit" value="Deletar Conta" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
         </form>
     </section>
     <footer>

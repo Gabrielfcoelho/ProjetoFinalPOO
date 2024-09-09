@@ -20,25 +20,7 @@ def admin_register():
     password = request.form.get('pwd')
     admin = 1
     app.register_user(username, password, admin)
-    return redirect('/admin/login')
-
-
-@bp.route('/admin/login', methods=["POST", "GET"])
-def admin_login():
-    if request.method == 'GET':
-        adm = True
-        return render_template('login.html', adm=adm)
-
-    app = Application()
-    username = request.form.get('username')
-    password = request.form.get('pwd')
-    user = app.get_user(username, password)
-
-    print(user)
-    session['user_id'] = user[0] 
-    session['admin'] = user[3]
-
-    return redirect('/admin')
+    return redirect('/login')
 
 
 @bp.route('/admin', methods=["GET", "POST"])
@@ -46,11 +28,11 @@ def admin_login():
 def admin_index():
     app = Application()
     
-    users = app.db.get_all_users()
-    wallets = app.db.get_all_wallet()
-    # history = db.execute("SELECT * FROM history")
+    users = app.get_users()
+    wallets = app.get_wallets()
+    records = app.get_records()
 
-    return render_template("admin.html", users=users, wallets=wallets)
+    return render_template("admin.html", users=users, wallets=wallets, records=records)
 
 
 @bp.route('/login', methods=["POST", "GET"])
@@ -65,10 +47,8 @@ def login():
     if not app.authenticate_user(username, password):
         return apology('Usuário não encontrado')
     
-    print(user)
-
-    session['user_id'] = user[0] 
-    session['admin'] = user[3]
+    session['user_id'] = user[0]
+    session['role'] = user[3]
 
     return redirect('/')
 
@@ -90,8 +70,6 @@ def index():
     app = Application()
 
     wallet = app.db.get_wallet(session['user_id'])
-    print(wallet)
-    
     return render_template('index.html', wallet=wallet)
 
 # comprar stocks
@@ -158,7 +136,7 @@ def user(id):
     user = app.get_user_by_id(id)
     return render_template('profile.html', user=user)
 
-@bp.route('/user/<int:id>/edit', methods=['POST'])
+@bp.route('/user/<int:id>/edit', methods=['POST', 'GET'])
 def edit_user(id):
     app = Application()
     username = request.form.get('username')
@@ -166,9 +144,11 @@ def edit_user(id):
     role = request.form.get('role')
 
     app.edit_user(id, username, role, password)
+    session['role'] = role
+
     return redirect('/user/{}'.format(id))
 
-@bp.route('/user/<int:id>/delete', methods=['POST'])
+@bp.route('/user/<int:id>/delete', methods=['POST', 'GET'])
 def delete_user(id):
     app = Application()
     app.delete_user(id)

@@ -54,10 +54,10 @@ class DataRecord():
     def new_admin(self, user):
         self.user = user
         if self.get_user(self.user.username, self.user.password) is not None:
-            self.cur.execute("UPDATE users SET admin=1 WHERE username=? AND password=?", (self.user.username, self.user.password))
+            self.cur.execute("UPDATE users SET role=1 WHERE username=? AND password=?", (self.user.username, self.user.password))
             self.con.commit()
             return
-        self.cur.executemany("INSERT INTO users(username, password, admin) VALUES(?, ?, ?)", self.user.db_format())
+        self.cur.executemany("INSERT INTO users(username, password, role) VALUES(?, ?, ?)", self.user.db_format())
         self.con.commit()
         return
     
@@ -144,7 +144,7 @@ class DataRecord():
     def get_all_users(self):
         return self.cur.execute("SELECT * FROM users").fetchall()
     
-    def get_all_wallet(self):
+    def get_all_wallets(self):
         return self.cur.execute("SELECT * FROM wallet").fetchall()
     
     def get_all_records(self):

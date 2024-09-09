@@ -57,7 +57,7 @@ def admin_required(f):
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get("admin") is None:
+        if session.get("role") is None or session.get("role") != 1:
             return apology("Usuário não tem permissão para acessar esta rota")
         return f(*args, **kwargs)
 
