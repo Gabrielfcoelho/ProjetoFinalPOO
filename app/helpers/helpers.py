@@ -68,9 +68,12 @@ def get_stock(symbol):
     # Função para pegar informações de uma ação
     symbol = symbol.upper()
     url = f"http://brapi.dev/api/quote/{symbol}?token=tVvVt6GbrSWFeB5Sg34bd7"
+    params = {
+        'interval': '30m'
+    }
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, params=params)
         response.raise_for_status()
 
         quote = response.json()

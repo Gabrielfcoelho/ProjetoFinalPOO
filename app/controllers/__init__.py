@@ -105,7 +105,7 @@ def buy():
     
     symbol = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
-    price = float(request.form.get('price'))
+    price = get_stock(symbol)['price']
 
     if get_stock(symbol) is None:
         return apology('Ação não encontrada', 404)
@@ -125,10 +125,10 @@ def sell():
 
     symbol = request.form.get('stock')
     qtd = float(request.form.get('qtd'))
-    price = float(request.form.get('price'))
+    price = get_stock(symbol)['price']
 
     if app.sell_stock(symbol, qtd, price, session["user_id"]) is not True:
-        return apology("Operação inválida! Não é possível vender mais ações do que você possui!")
+        return apology("Operação inválida!")
 
     return redirect("/")
 

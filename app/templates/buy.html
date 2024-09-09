@@ -2,15 +2,16 @@
 
 {% block main %}
     <h1>Stock Market</h1>
-    <p>Bem vindo a area de compra!</p>
+    <h1>Bem vindo a area de compra!</h1>
     <section id="section_content">
         <form action="/buy" method="post">
             <label for="stock">Ativo:</label>
             <input type="text" name="stock" id="stock" placeholder="Ativo">
             <label for="qtd">Quantidade:</label>
             <input type="number" name="qtd" id="qtd">
-            <label for="price">Preço:</label>
-            <input type="text" name="price" id="price">
+            {% if price %}
+                <p>Preço atual: {{ price }} </p>
+            {% endif %}
             <input id="form_submit" type="submit" value="Comprar">
         </form>
     </section>
