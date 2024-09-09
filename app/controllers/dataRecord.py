@@ -134,9 +134,9 @@ class DataRecord():
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
     
     def get_stock(self, symbol, user_id):
-        if self.cur.execute("SELECT * FROM wallet WHERE user_id=? AND stock = ?", (user_id,symbol)).fetchone() is None:
-            return False
-        return True
+        if self.cur.execute("SELECT * FROM wallet WHERE user_id=? AND stock = ?", (user_id,symbol)).fetchone() is not None:
+            return True
+        return False
     
     def get_records(self, user_id):
         return self.cur.execute("SELECT * FROM records WHERE user_id=?", (user_id,)).fetchall()

@@ -106,7 +106,8 @@ def buy(symbol=None, price=None):
         symbol = request.form.get('stock')
         price = get_stock(symbol)['price']
         if get_stock(symbol) is not None:
-            return render_template('buy.html', symbol=symbol, price=price)
+            length = len(symbol)
+            return render_template('buy.html', symbol=symbol, price=price, length=length)
         return apology('Ação não encontrada', 404)
     qtd = float(request.form.get('qtd'))
     app.buy_stock(symbol, qtd, price, session["user_id"])
@@ -124,11 +125,13 @@ def sell(symbol=None, price=None):
     app = Application()
 
     if symbol is None:
-        symbol = request.form.get('stock')
+        symbol = request.form.get('stock').upper()
         price = get_stock(symbol)['price']
         if app.search_stock(symbol, session['user_id']):
-            return render_template("sell.html", symbol=symbol, price=price)
+            length = len(symbol)
+            return render_template("sell.html", symbol=symbol, price=price, length=length)
         return apology("Operação inválida!")
+    
     qtd = float(request.form.get('qtd'))
     if app.sell_stock(symbol, qtd, price, session["user_id"]) is False:
         return apology("Operação inválida!")

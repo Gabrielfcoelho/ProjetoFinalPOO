@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <h1>Profile</h1>
+    <h1 class="body_txt">Profile</h1>
     <section>
         <p>Welcome, <b>{{ user[1] }}!</b></p>
         <p>Your password is: {{ user[2] }}</p>
@@ -32,6 +32,9 @@
             <input id="form_submit" type="submit" value="Delete Account" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
         </form>
     </section>
+    <footer>
+        <p>&copy;StockMarket</p>
+    </footer>
 
     <script>
         document.getElementById('edit-profile-btn').addEventListener('click', function() {

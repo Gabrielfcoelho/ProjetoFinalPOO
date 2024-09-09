@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <h1>Stock Market</h1>
-    <h1>Bem vindo a area de compra!</h1>
+    <h1 class="body_txt">Stock Market</h1>
+    <h1 class="body_txt">Bem vindo a area de compra!</h1>
     <section id="section_content">
         {% if not price %}
             <form action="/buy" method="post">
@@ -13,7 +13,11 @@
         {% else %}
             <form action="/buy/{{ symbol }}/{{ price }}" method="post">
                 <label for="qtd">Quantidade:</label>
-                <input type="number" name="qtd" id="qtd">
+                {% if symbol[length - 1] == "F" %}
+                    <input type="number" name="qtd" id="qtd">
+                {% else %}
+                    <input type="number" name="qtd" id="qtd" step="100">
+                {% endif %}
                 <p>Preço atual: {{ price }} </p>
                 <input id="form_submit" type="submit" value="Comprar">
             </form>
@@ -22,4 +26,7 @@
             </form>
         {% endif %}
     </section>
+    <footer>
+        <p>&copy;StockMarket</p>
+    </footer>
 {% endblock %}

@@ -1,8 +1,13 @@
 body {
-    background-color: rgb(4, 74, 144);
+    background-image: url('../img/background_img.jpg');
+    background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+.body_txt{
+    color: whitesmoke;
 }
 
 .navbar {
