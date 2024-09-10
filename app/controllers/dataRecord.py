@@ -133,6 +133,16 @@ class DataRecord():
     def get_wallet(self, user_id):
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
     
+    def delete_stock(self, symbol, user_id):
+        self.cur.execute("DELETE FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id))
+        self.con.commit()
+        return
+    
+    def delete_record(self, order_id):
+        self.cur.execute("DELETE FROM records WHERE order_id = ?", (order_id,))
+        self.con.commit()
+        return
+    
     def get_stock(self, symbol, user_id):
         if self.cur.execute("SELECT * FROM wallet WHERE user_id=? AND stock = ?", (user_id,symbol)).fetchone() is not None:
             return True

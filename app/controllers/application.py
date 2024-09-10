@@ -50,6 +50,12 @@ class Application():
     
     def search_stock(self, symbol, user_id):
         return self.db.get_stock(symbol, user_id)
+    
+    def delete_stock(self, symbol, user_id):
+        return self.db.delete_stock(symbol, user_id)
+    
+    def delete_record(self, order_id):
+        return self.db.delete_record(order_id)
 
     def get_wallet(self, user_id):
         return self.db.get_wallet(user_id)

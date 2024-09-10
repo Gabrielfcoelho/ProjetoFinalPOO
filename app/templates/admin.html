@@ -54,8 +54,8 @@
                     <td>{{ wallet[3] }}</td>
                     <td>{{ wallet[4] }}</td>
                     <td>
-                        <a href="/edit_wallet/{{ wallet[0] }}/{{ wallet[1] }}">Edit</a> |
-                        <a href="/delete_wallet/{{ wallet[0] }}/{{ wallet[1] }}" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}">Edit</a> |
+                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -87,8 +87,8 @@
                     <td>{{ record[4] }}</td>
                     <td>{{ record[5] }}</td>
                     <td>
-                        <a href="/edit_history/{{ record[0] }}">Edit</a> |
-                        <a href="/delete_history/{{ record[0] }}" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/records/{{ record[1] }}">Edit</a> |
+                        <a href="/records/{{ record[1] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

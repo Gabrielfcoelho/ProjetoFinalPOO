@@ -115,6 +115,22 @@ def sell(symbol=None, price=None):
         return apology("Operação inválida!")
     return redirect("/")
 
+# deletar stocks
+@bp.route("/stock/<int:user_id>/<string:stock>/delete", methods=["GET", "POST"])
+def delete_stock(user_id, stock):
+    app = Application()
+    app.delete_stock(stock, user_id)
+    return redirect('/admin')
+
+
+# deletar histórico
+@bp.route("/records/<int:order_id>/delete", methods=["GET", "POST"])
+def delete_records(order_id):
+    app = Application()
+    app.delete_record(order_id)
+    return redirect('/admin')
+
+
 # historico
 @bp.route("/records")
 def records():
