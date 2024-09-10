@@ -1,5 +1,3 @@
-from flask_session import Session
-
 from ..models.adm import Adm
 from ..models.stock import Stock
 from ..models.user import User

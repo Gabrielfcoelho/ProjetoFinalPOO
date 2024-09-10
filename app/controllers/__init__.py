@@ -1,7 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, session
 
-from flask_session import Session
-
 from ..helpers.helpers import (admin_required, apology, get_stock,
                                login_required)
 from .application import Application
@@ -176,7 +174,7 @@ def edit_user(id):
     role = request.form.get('role')
 
     app.edit_user(id, username, role, password)
-    session['role'] = role
+    session['role'] = int(role)
 
     return redirect('/user/{}'.format(id))
 
