@@ -82,6 +82,8 @@ class DataRecord():
     def delete_user(self, user_id):
         self.user_id = user_id
         self.cur.execute("DELETE FROM users WHERE id=?", (self.user_id,))
+        self.cur.execute("DELETE FROM wallet WHERE user_id=?", (self.user_id,))
+        self.cur.execute("DELETE FROM records WHERE user_id=?", (self.user_id,))
         self.con.commit()
         return
 
