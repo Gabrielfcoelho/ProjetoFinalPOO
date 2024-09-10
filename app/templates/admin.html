@@ -12,7 +12,6 @@
                     <th>Nome de usuário</th>
                     <th>Senha</th>
                     <th>Cargo</th>
-                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,8 +22,8 @@
                     <td>{{ user[2] }}</td>
                     <td>{{ 'Administrador' if user[3] == 1 else 'Usuário' }}</td>
                     <td>
-                        <a href="/user/{{ user[0] }}">Edit</a> |
-                        <a href="/user/{{ user[0] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/user/{{ user[0] }}">Editar</a> |
+                        <a href="/user/{{ user[0] }}/delete" onclick="return confirm('Are you sure?');">Apagar</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -38,11 +37,10 @@
             <thead>
                 <tr>
                     <th>ID do usuário</th>
-                    <th>Stock</th>
-                    <th>Quantity</th>
-                    <th>Average Price</th>
-                    <th>Total Cost</th>
-                    <th>Actions</th>
+                    <th>Ação</th>
+                    <th>Quantidade</th>
+                    <th>Preço Médio</th>
+                    <th>Custo Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,8 +52,8 @@
                     <td>{{ wallet[3] }}</td>
                     <td>{{ wallet[4] }}</td>
                     <td>
-                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}">Edit</a> |
-                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}">Editar</a> |
+                        <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}/delete" onclick="return confirm('Are you sure?');">Apagar</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -74,7 +72,6 @@
                     <th>Ativo</th>
                     <th>Quantidade</th>
                     <th>Preço</th>
-                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,8 +84,7 @@
                     <td>{{ record[4] }}</td>
                     <td>{{ record[5] }}</td>
                     <td>
-                        <a href="/records/{{ record[1] }}">Edit</a> |
-                        <a href="/records/{{ record[1] }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
+                        <a href="/records/{{ record[1] }}/delete" onclick="return confirm('Are you sure?');">Apagar</a>
                     </td>
                 </tr>
                 {% endfor %}

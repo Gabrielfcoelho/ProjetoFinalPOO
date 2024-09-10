@@ -1,8 +1,33 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <h1 class="body_txt">{{ stock[1] }}</h1>
+    <h1 class="body_txt">Editar ação</h1>
     <section>
-        
+        <p>Ação: {{ stock[1] }}</b></p>
+        <p>Quantidade: {{ stock[2] }}</p>
+        <p>Preço Médio: {{ stock[3] }}</p>
+        <p>Custo Total: {{ stock[4] }}</p>
+
+        <button id="edit-profile-btn">Editar ação</button>
+        <form id="edit-profile-form" style="display:none;" method="POST" action="/stock/{{ stock[0] }}/{{ stock[1] }}/edit">
+            <label for="qtd">Quantidade:</label>
+            <input id="pwd" name="qtd" value="{{ stock[2] }}"><br>
+
+            <label for="price">Preço médio:</label>
+            <input id="pwd" name="price" value="{{ stock[3] }}"><br>
+
+            <input id="form_submit" type="submit" value="Atualizar ação">
+        </form>
+    </section>
+        <footer>
+            <p>&copy;StockMarket</p>
+        </footer>
+
+        <script>
+            document.getElementById('edit-profile-btn').addEventListener('click', function() {
+                var form = document.getElementById('edit-profile-form');
+                form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            });
+        </script>
     </section>
 {% endblock main %}

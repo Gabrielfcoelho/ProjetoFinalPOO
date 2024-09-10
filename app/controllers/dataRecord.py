@@ -133,6 +133,11 @@ class DataRecord():
     def get_wallet(self, user_id):
         return self.cur.execute("SELECT * FROM wallet WHERE user_id=?", (user_id,)).fetchall()
     
+    def edit_stock(self, symbol, qtd, price, user_id):
+        self.cur.execute("UPDATE wallet SET qtd = ?, avg_price = ?, avg_cost = ? WHERE stock = ? AND user_id = ?", (qtd, price, f"{(float(qtd)*float(price)):.2f}", symbol, user_id))
+        self.con.commit()
+        return
+
     def delete_stock(self, symbol, user_id):
         self.cur.execute("DELETE FROM wallet WHERE stock = ? AND user_id = ?", (symbol, user_id))
         self.con.commit()
@@ -144,10 +149,8 @@ class DataRecord():
         return
     
     def get_stock(self, symbol, user_id):
-        if self.cur.execute("SELECT * FROM wallet WHERE user_id=? AND stock = ?", (user_id,symbol)).fetchone() is not None:
-            return True
-        return False
-    
+        return self.cur.execute("SELECT * FROM wallet WHERE user_id=? AND stock = ?", (user_id,symbol)).fetchone()
+
     def get_records(self, user_id):
         return self.cur.execute("SELECT * FROM records WHERE user_id=?", (user_id,)).fetchall()
 

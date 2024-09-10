@@ -48,6 +48,12 @@ class Application():
     def sell_stock(self, symbol, qtd, price, id):
         return self.db.rm_wallet(symbol, qtd, price, id)
     
+    def get_stock(self, symbol, user_id):
+        return self.db.get_stock(symbol, user_id)
+    
+    def edit_stock(self, symbol, qtd, price, user_id):
+        return self.db.edit_stock(symbol, qtd, price, user_id)
+
     def search_stock(self, symbol, user_id):
         return self.db.get_stock(symbol, user_id)
     
