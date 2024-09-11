@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, session
 
-from ..helpers.helpers import (admin_required, apology, get_stock,
+from ..helpers.helpers import (admin_required, apology, brl, get_stock,
                                login_required)
 from .application import Application
 
@@ -30,7 +30,7 @@ def admin_index():
     wallets = app.get_wallets()
     records = app.get_records()
 
-    return render_template("admin.html", users=users, wallets=wallets, records=records)
+    return render_template("admin.html", users=users, wallets=wallets, records=records, brl=brl)
 
 
 @bp.route('/login', methods=["POST", "GET"])
@@ -68,7 +68,7 @@ def index():
     app = Application()
 
     wallet = app.get_wallet(session['user_id'])
-    return render_template('index.html', wallet=wallet, round=round, get_stock= get_stock)
+    return render_template('index.html', wallet=wallet, round=round, get_stock= get_stock, brl=brl)
 
 # comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])
@@ -83,7 +83,7 @@ def buy(symbol=None, price=None):
         price = get_stock(symbol)['price']
         if get_stock(symbol) is not None:
             length = len(symbol)
-            return render_template('buy.html', symbol=symbol, price=price, length=length)
+            return render_template('buy.html', symbol=symbol, price=price, length=length, brl=brl)
         return apology('Ação não encontrada', 404)
     qtd = float(request.form.get('qtd'))
     app.buy_stock(symbol, qtd, price, session["user_id"])
@@ -150,7 +150,7 @@ def delete_records(order_id):
 def records():
     app = Application()
     history = app.db.get_records(session['user_id'])
-    return render_template('records.html', history=history)
+    return render_template('records.html', history=history, brl=brl)
 
 
 
