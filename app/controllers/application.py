@@ -1,7 +1,6 @@
 from ..models.adm import Adm
 from ..models.stock import Stock
 from ..models.user import User
-from ..models.wallet import Wallet
 from .dataRecord import DataRecord
 
 

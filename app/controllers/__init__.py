@@ -67,8 +67,8 @@ def register():
 def index():
     app = Application()
 
-    wallet = app.db.get_wallet(session['user_id'])
-    return render_template('index.html', wallet=wallet)
+    wallet = app.get_wallet(session['user_id'])
+    return render_template('index.html', wallet=wallet, round=round, get_stock= get_stock)
 
 # comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])

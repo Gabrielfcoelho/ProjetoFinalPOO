@@ -15,6 +15,7 @@
                 <th>Quantidade</th>
                 <th>Preço Médio</th>
                 <th>Custo Médio</th>
+                <th>Ganho/Perda</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                 <td>{{ stock[2] }}</td>
                 <td>{{ stock[3] }}</td>
                 <td>{{ stock[4] }}</td>
+                <td>{{ round((get_stock(stock[1])['price'] - stock[3]) / get_stock(stock[1])['price'] * 100, 2) }}%</td>
             </tr>
           {% endfor %}
         </tbody>

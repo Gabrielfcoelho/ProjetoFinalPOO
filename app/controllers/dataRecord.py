@@ -1,8 +1,6 @@
 import sqlite3
-from uuid import uuid4
 
 from ..models.stock import Stock
-from ..models.user import User
 from ..models.wallet import Wallet
 
 
