@@ -80,3 +80,8 @@ def get_stock(symbol):
         return {"symbol": symbol, "price": price}
     except requests.RequestException:
         return None
+    
+
+def brl(value):
+    # Função para formatar valores em BRL
+    return f"R$ {value:.2f}"

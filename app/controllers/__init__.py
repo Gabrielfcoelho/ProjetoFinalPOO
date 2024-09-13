@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, session
 
-from ..helpers.helpers import (admin_required, apology, get_stock,
+from ..helpers.helpers import (admin_required, apology, brl, get_stock,
                                login_required)
 from .application import Application
 
@@ -68,7 +68,7 @@ def index():
     app = Application()
 
     wallet = app.get_wallet(session['user_id'])
-    return render_template('index.html', wallet=wallet, round=round, get_stock= get_stock)
+    return render_template('index.html', wallet=wallet, round=round, get_stock=get_stock, brl=brl)
 
 # comprar stocks
 @bp.route("/buy", methods=['GET', 'POST'])
@@ -122,6 +122,7 @@ def delete_stock(user_id, stock):
 
 # visualizar stock
 @bp.route("/stock/<int:user_id>/<string:stock>", methods=["GET", "POST"])
+@login_required
 def stock(user_id, stock):
     app = Application()
     stock = app.get_stock(stock, user_id)
@@ -147,6 +148,7 @@ def delete_records(order_id):
 
 # historico
 @bp.route("/records")
+@login_required
 def records():
     app = Application()
     history = app.db.get_records(session['user_id'])
@@ -161,6 +163,7 @@ def logout():
 
 
 @bp.route('/user/<int:id>', methods=['GET', 'POST'])
+@login_required 
 def user(id):
     app = Application()
     user = app.get_user_by_id(id)
