@@ -30,7 +30,7 @@ def admin_index():
     wallets = app.get_wallets()
     records = app.get_records()
 
-    return render_template("admin.html", users=users, wallets=wallets, records=records)
+    return render_template("admin.html", users=users, wallets=wallets, records=records, brl=brl)
 
 
 @bp.route('/login', methods=["POST", "GET"])
@@ -83,7 +83,7 @@ def buy(symbol=None, price=None):
         price = get_stock(symbol)['price']
         if get_stock(symbol) is not None:
             length = len(symbol)
-            return render_template('buy.html', symbol=symbol, price=price, length=length)
+            return render_template('buy.html', symbol=symbol, price=price, length=length, brl=brl)
         return apology('Ação não encontrada', 404)
     qtd = float(request.form.get('qtd'))
     app.buy_stock(symbol, qtd, price, session["user_id"])
@@ -152,7 +152,7 @@ def delete_records(order_id):
 def records():
     app = Application()
     history = app.db.get_records(session['user_id'])
-    return render_template('records.html', history=history)
+    return render_template('records.html', history=history, brl=brl)
 
 
 

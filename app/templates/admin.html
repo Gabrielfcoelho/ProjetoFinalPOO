@@ -49,8 +49,8 @@
                     <td>{{ wallet[0] }}</td>
                     <td>{{ wallet[1] }}</td>
                     <td>{{ wallet[2] }}</td>
-                    <td>{{ wallet[3] }}</td>
-                    <td>{{ wallet[4] }}</td>
+                    <td>{{ brl(wallet[3]) }}</td>
+                    <td>{{ brl(wallet[4]) }}</td>
                     <td>
                         <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}">Editar</a> |
                         <a href="/stock/{{ wallet[0] }}/{{ wallet[1] }}/delete" onclick="return confirm('Are you sure?');">Apagar</a>
@@ -71,7 +71,7 @@
                     <th>Tipo</th>
                     <th>Ativo</th>
                     <th>Quantidade</th>
-                    <th>Preço</th>
+                    <th>Preço Médio</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,7 +82,7 @@
                     <td>{{ record[2] }}</td>
                     <td>{{ record[3] }}</td>
                     <td>{{ record[4] }}</td>
-                    <td>{{ record[5] }}</td>
+                    <td>{{ brl(record[5]) }}</td>
                     <td>
                         <a href="/records/{{ record[1] }}/delete" onclick="return confirm('Are you sure?');">Apagar</a>
                     </td>

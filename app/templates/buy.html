@@ -18,7 +18,7 @@
                 {% else %}
                     <input type="number" name="qtd" id="qtd" step="100">
                 {% endif %}
-                <p>Preço atual: {{ price }} </p>
+                <p>Preço atual: {{ brl(price) }} </p>
                 <input id="form_submit" type="submit" value="Comprar">
             </form>
             <form action="/buy">
